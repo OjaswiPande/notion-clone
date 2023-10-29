@@ -57,7 +57,7 @@ export const getSidebar = query({
   args: {
     parentDocument: v.optional(v.id("documents"))
   },
-  handler: async (ctx, args) => {
+  handler: async (ctx,args) => {
     const identity = await ctx.auth.getUserIdentity();
 
     if (!identity) {
