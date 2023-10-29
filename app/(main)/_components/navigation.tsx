@@ -1,11 +1,14 @@
 "use client";
 
 import { cn } from "@/lib/utils";
-import { ChevronsLeft, MenuIcon } from "lucide-react";
+import { ChevronsLeft, MenuIcon, PlusCircle } from "lucide-react";
 import { useParams, usePathname, useRouter } from "next/navigation";
 import { ElementRef, useEffect, useRef, useState } from "react";
 import { useMediaQuery } from "usehooks-ts";
 import { UserItem } from "./user-item";
+import {useQuery} from "convex/react";
+import { api } from "@/convex/_generated/api";
+import { Item } from "./item";
 
 export const Navigation = () =>{
     const router = useRouter();
@@ -14,6 +17,7 @@ export const Navigation = () =>{
     const params = useParams();
     const pathname = usePathname();
     const isMobile = useMediaQuery("(max-width: 768px)");
+    const documents =useQuery(api.documents.getSidebar);
   const isResizingRef = useRef(false);
   const sidebarRef = useRef<ElementRef<"aside">>(null);
   const navbarRef = useRef<ElementRef<"div">>(null);
@@ -107,9 +111,12 @@ export const Navigation = () =>{
             </div>
             <div>
                 <UserItem/>
+                <Item onClick={() => {}} label="New Page" icon={PlusCircle}/>
             </div>
             <div className="mt-4">
-                <p>Documents</p>
+                {documents?.map((document) =>(
+                    <p key={document._id}>{document.title}</p>
+                ))}
             </div> 
             <div onMouseDown={handleMouseDown}
           onClick={resetWidth} 
